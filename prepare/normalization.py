@@ -27,7 +27,7 @@ def normalize(iMat):
                 else:
                     iMat[m,n]=1.0
             else:
-                iMat[m,n]=(iMat[m,n]-min[n])/lens[n]  
+                iMat[m,n]=(iMat[m,n]-min[n])/lens[n]
     return iMat
     
 '''
