@@ -20,11 +20,12 @@ def KNN(inX,dataSet,labels,k):
     sortedDistIndices=distances.argsort() 
     classCount={}
     for i in range(k):
-        voteIlabel=labels(sortedDistIndices[i])
+        voteIlabel=labels[sortedDistIndices[i]]
         classCount[voteIlabel]=classCount.get(voteIlabel,0)+1
-    sortedClassCount=sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=True)
+    sortedClassCount=sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return sortedClassCount[0][0]        
 #测试
+
 
 
 
