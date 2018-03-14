@@ -23,8 +23,7 @@ def KNN(inX,dataSet,labels,k):
         voteIlabel=labels(sortedDistIndices[i])
         classCount[voteIlabel]=classCount.get(voteIlabel,0)+1
     sortedClassCount=sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=True)
-    return sortedClassCount[0][0]
-        
+    return sortedClassCount[0][0]        
 #测试
 
 
