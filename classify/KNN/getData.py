@@ -15,7 +15,6 @@ def file2Matrix(filename):
     arrayOfLines=fr.readlines()
     numberOfLines=len(arrayOfLines)#样本数
     dataDimension=len(arrayOfLines[0].strip().split('\t'))-1#样本维度
-    print(numberOfLines)
     returnMat=ny.zeros((numberOfLines,dataDimension))
     classLabelVector=[]
     index =0

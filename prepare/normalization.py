@@ -17,21 +17,22 @@ def normalize(iMat):
             if iMat[j,i]<min[i]:
                 min[i]=iMat[j,i]
     lens=[0]*row
+    returnMat=ny.zeros((line,row))
     for k in range(row):
         lens[k]=max[k]-min[k]
     for m in range(line):
         for n in range(row):
             if abs(lens[n]<0.005):
                 if abs(iMat[m,n])<=0.005:
-                    iMat[m,n]=0.0
+                    returnMat[m,n]=0.0
                 else:
-                    iMat[m,n]=1.0
+                    returnMat[m,n]=1.0
             else:
-                iMat[m,n]=(iMat[m,n]-min[n])/lens[n]
-    return iMat
+                returnMat[m,n]=(iMat[m,n]-min[n])/lens[n]
+    return returnMat
     
 '''
-测试案例   
+#测试案例   
 a=ny.mat([[7.8,2.4,3.7,0],[2.4,5.2,9,0],[0.5,8,4.4,0]])
 an=normalize(a)
 print(an)
