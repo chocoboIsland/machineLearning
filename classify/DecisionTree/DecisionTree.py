@@ -6,6 +6,7 @@ Created on Thu Mar 15 14:02:42 2018
 """
 import math
 import numpy as ny
+import operator
 '''
 计算给定数据集的香农熵
 输入二维数组，每行最后一个元素为标签，numpy array 或python 内置array都可以
@@ -39,6 +40,11 @@ def splitDataSet(dataSet,axis,value):
             retDataSet.append(reducedFeatVec)
     return retDataSet
 
+'''
+返回信息增益最大的特征
+输入：数据集，二维数组，最后一列为标签
+输出：信息增益最大的特征编号
+'''
 def chooseBestFeatureToSplit(dataSet):
     numFeatures=len(dataSet[0])-1
     bestEntropy=calcShannonEntropy(dataSet)#源数据集香农熵
@@ -57,8 +63,48 @@ def chooseBestFeatureToSplit(dataSet):
             bestInfoGain=infoGain
             bestFeature=i
     return bestFeature
-        
-            
+
+'''
+返回列表中出现次数最高的元素
+'''
+       
+def majorityCnt(classList):
+    classCount={}
+    for vote in classList:
+        if vote not in classCount.keys():
+            classCount[vote]=0
+        classCount[vote]+=1
+    sortedClassCount=sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
+    print(sortedClassCount)
+    return sortedClassCount[0][0]
+
+'''
+创建决策树
+输入：dataSet数据集二维矩阵，最后一列为标签
+     labels每一列特征的含义
+输出：决策树，字典表示
+'''
+def createTree(dataSet,labels):
+    classList=[example[-1] for example in dataSet]#列表最后一列
+    if classList.count(classList[0])==len(classList):#类别相同则停止继续划分
+        return classList[0]
+    if len(dataSet[0])==1:
+        return majorityCnt(classList)#遍历完所有特征时返回出现次数最高的类别
+    bestFeat=chooseBestFeatureToSplit(dataSet)
+    bestFeatLabel=labels[bestFeat]
+    myTree={bestFeatLabel:{}}
+    del(labels[bestFeat])
+    featValues=[example[bestFeat] for example in dataSet]
+    uniqueVals=set(featValues)
+    for value in uniqueVals:
+        subLabels=labels[:]#拷贝一份数据而不是引用
+        myTree[bestFeatLabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
+    return myTree
+
+
+    
+    
+    
         
         
         
@@ -74,10 +120,14 @@ dataSet=[[1,4,6,6,3,1],
          [6,4,5,1,2,7],
          [8,8,5,2,3,1]]
 
-#e=[d[1] for d in dataSet]
-#c=splitDataSet(dataSet,1,3)
-#print(c)
-e=set("hello")
-e.add('da')
-#help(set)
-print(e)
+dataSetFish=[['Y','Y','Y'],
+             ['Y','Y','Y'],
+             ['Y','N','N'],
+             ['N','Y','N'],
+             ['N','Y','N']
+             ]
+
+labels=['surfacing','have leg']
+a=createTree(dataSetFish,labels)
+print(a)
+
